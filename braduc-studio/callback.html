@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>BRADUC Studio — TikTok OAuth Callback</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 16px;line-height:1.6}
+code{background:#f0f0f0;padding:8px;border-radius:4px;display:block;word-break:break-all;margin:8px 0}
+.warn{color:#a00}
+</style>
+</head>
+<body>
+<h1>Autorização recebida</h1>
+<p>Copie o valor de <code>code</code> abaixo e volte para o terminal para continuar.</p>
+<div id="output">Lendo parâmetros da URL...</div>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  const state = params.get("state");
+  const error = params.get("error");
+  const errorDescription = params.get("error_description");
+  const out = document.getElementById("output");
+  out.innerHTML = "";
+
+  if (error) {
+    out.innerHTML = `<p class="warn">Erro retornado pelo TikTok: <strong>${error}</strong></p><code>${errorDescription || ""}</code>`;
+  } else if (code) {
+    out.innerHTML = `
+      <p><strong>code:</strong></p>
+      <code>${code}</code>
+      <p><strong>state:</strong></p>
+      <code>${state || "(nenhum)"}</code>
+    `;
+  } else {
+    out.innerHTML = "<p class=\"warn\">Nenhum parâmetro code encontrado na URL.</p>";
+  }
+</script>
+</body>
+</html>
